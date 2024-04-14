@@ -32,15 +32,20 @@ def get_link_card_info(url: str):
 
     return title, description, image_url
 
-def get_trending_repository(url='https://github.com/trending'):
+def get_trending_repositories(url='https://github.com/trending', count=5):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
-    first_repo_link_element = soup.find('h2', class_='h3 lh-condensed').a
-    first_repo_href = first_repo_link_element['href']
-    first_repo_name = first_repo_link_element.text.split('/')[-1].replace('\n', '').strip()
-    full_url = f'https://github.com{first_repo_href}'
+    repo_elements = soup.find_all('h2', class_='h3 lh-condensed')[:count]
 
-    return full_url, first_repo_name
+    repositories = []
+    for repo_element in repo_elements:
+        a_tag = repo_element.find('a')
+        href = a_tag['href']
+        name = a_tag.text.split('/')[-1].replace('\n', '').strip()
+        full_url = f'https://github.com{href}'
+        repositories.append((full_url, name))
+
+    return repositories
 
 def get_repository_description(gpt_client, url):
     response = gpt_client.chat.completions.create(
@@ -59,30 +64,33 @@ def main():
         print_usage_and_exit()
 
     user_handle, user_password = sys.argv[1], sys.argv[2]
-    full_url, first_repo_name = get_trending_repository()
-    print(f'URL: {full_url}\nName: {first_repo_name}')
+    repositories = get_trending_repositories()
 
     gpt_client = GPTClient()
-    message = get_repository_description(gpt_client, full_url)
-    print(message)
-
-    title, description, image_url = get_link_card_info(full_url)
-    print(title, description, image_url, sep='\n')
-
     bs_client = BSClient()
-    embed_external = models.AppBskyEmbedExternal.Main(
-        external=models.AppBskyEmbedExternal.External(
-            title=title,
-            description=description,
-            uri=full_url
+
+    for full_url, repo_name in repositories:
+        print(f'URL: {full_url}\nName: {repo_name}')
+
+        message = get_repository_description(gpt_client, full_url)
+        print(message)
+
+        title, description, image_url = get_link_card_info(full_url)
+        print(title, description, image_url, sep='\n')
+
+        embed_external = models.AppBskyEmbedExternal.Main(
+            external=models.AppBskyEmbedExternal.External(
+                title=title,
+                description=description,
+                uri=full_url
+            )
         )
-    )
 
-    message_with_breaks = message.replace('\n', '').replace('。', '。\n')
-    text = client_utils.TextBuilder().text('今日のGitHubトレンド\n\n').link(f'{first_repo_name}', f'{full_url}').text('\n' + f'{message_with_breaks}')
-    print(text)
+        message_with_breaks = message.replace('\n', '').replace('。', '。\n')
+        text = client_utils.TextBuilder().text('今日のGitHubトレンド\n\n').link(f'{repo_name}', f'{full_url}').text('\n' + f'{message_with_breaks}')
+        print(text)
 
-    login_and_post(bs_client, user_handle, user_password, text, embed_external)
+        login_and_post(bs_client, user_handle, user_password, text, embed_external)
 
 if __name__ == "__main__":
     main()
