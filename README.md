@@ -1,6 +1,6 @@
 # GitHub Trending to Bluesky
 
-GitHub Trending to Blueskyは、GitHubのトレンドにある最も人気のあるリポジトリの内容を要約し、Blueskyに投稿するPython製のアプリケーションです。  
+GitHub Trending to Blueskyは、[GitHubのトレンド](https://github.com/trending)にある最も人気のあるリポジトリの内容を要約し、Blueskyに投稿するPython製のアプリケーションです。  
 このアプリケーションは、技術トレンドに迅速に反応し、Blueskyのフォロワーに価値ある情報を提供することを目的としています。
 
 ## 機能

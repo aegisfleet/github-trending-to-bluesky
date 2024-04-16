@@ -2,12 +2,12 @@ name: スクリプトを実行する
 
 on:
   schedule:
-    - cron: '0 21 * * *'
+    - cron: '0 12 * * *'
 
 jobs:
   run_script:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: リポジトリをチェックアウト
         uses: actions/checkout@v4
