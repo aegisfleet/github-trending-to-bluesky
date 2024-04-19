@@ -10,19 +10,19 @@ def get_trending_repositories(url="https://github.com/trending", count=5):
     for repo_element in repo_elements:
         a_tag = repo_element.find("a")
         href = a_tag["href"]
-        name = a_tag.text.split("/")[-1].replace("\n", "").strip()
+        name = href[1:]
         full_url = f"https://github.com{href}"
-        repositories.append((full_url, href, name))
+        repositories.append((full_url, name))
 
     return repositories
 
-def get_readme_text(repo_href):
+def get_readme_text(repo_name):
     readme_urls = [
-        f"https://raw.githubusercontent.com{repo_href}/main/README.md",
-        f"https://raw.githubusercontent.com{repo_href}/master/README.md"
+        f"https://raw.githubusercontent.com/{repo_name}/main/README.md",
+        f"https://raw.githubusercontent.com/{repo_name}/master/README.md"
     ]
     for url in readme_urls:
         response = requests.get(url)
         if response.status_code == 200:
-            return response.text[:1000]
+            return response.text[:4000]
     return ''

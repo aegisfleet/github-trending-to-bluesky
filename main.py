@@ -18,14 +18,14 @@ def print_usage_and_exit():
     print("使用法: python main.py <ユーザーハンドル> <パスワード>")
     sys.exit(1)
 
-def get_description(gpt_client, repo_href, text, max_retries=3):
+def get_description(gpt_client, repo_name, text, max_retries=3):
     retry_count = 0
     while retry_count < max_retries:
         try:
             response = gpt_client.chat.completions.create(
                 model="gpt-4-turbo",
                 provider=g4f.Provider.Bing,
-                messages=[{"role": "user", "content": f"{repo_href}リポジトリは誰がいつどこで使うものか250文字以下で3行にまとめて欲しい。\n回答は日本語で強調文字は使用せず簡素にする。\n以下にリポジトリのREADMEを記載する。\n\n{text}"}],
+                messages=[{"role": "user", "content": f"{repo_name}リポジトリは誰がいつどこで使うものか250文字以下で3行にまとめて欲しい。\n回答は日本語で強調文字は使用せず簡素にする。\n以下にリポジトリのREADMEを記載する。\n\n{text}"}],
             )
             return response.choices[0].message.content
         except RateLimitError as e:
@@ -48,11 +48,11 @@ def main():
     gpt_client = GPTClient()
     bs_client = BSClient()
 
-    for full_url, repo_href, repo_name in targets:
-        print(f"\nURL: {full_url}\nName: {repo_href}")
+    for full_url, repo_name in targets:
+        print(f"\nURL: {full_url}\nName: {repo_name}")
 
-        readme_text = github_utils.get_readme_text(repo_href)
-        message = get_description(gpt_client, repo_href, readme_text)
+        readme_text = github_utils.get_readme_text(repo_name)
+        message = get_description(gpt_client, repo_name, readme_text)
         print(message)
 
         title, description, image_url = bluesky_utils.fetch_webpage_metadata(full_url)
