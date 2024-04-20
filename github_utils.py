@@ -24,5 +24,5 @@ def get_readme_text(repo_name):
     for url in readme_urls:
         response = requests.get(url)
         if response.status_code == 200:
-            return response.text[:4000]
+            return response.text[:2000]
     return ''
