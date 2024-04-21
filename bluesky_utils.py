@@ -1,4 +1,3 @@
-import httpx
 import io
 import requests
 import time
@@ -35,25 +34,35 @@ def format_message_with_link(title, url, introduction, content):
     formatted_content = content.replace("\n", "").replace("。", "。\n")
     return client_utils.TextBuilder().text(f"{introduction}\n\n").link(title, url).text(f"\n{formatted_content}")
 
-def compress_image(image_bytes, max_size_kb=950, quality=85):
+def compress_image(image_bytes, max_size_kb=500, quality=85):
     img = Image.open(io.BytesIO(image_bytes))
-    img_format = img.format
 
-    with io.BytesIO() as output:
-        img.save(output, format=img_format, quality=quality)
-        compressed = output.getvalue()
+    if img.mode == 'RGBA' or img.mode == 'P':
+        img = img.convert('RGB')
 
-    while len(compressed) > max_size_kb * 1024 and quality > 10:
-        quality -= 5
+    while True:
         with io.BytesIO() as output:
-            img.save(output, format=img_format, quality=quality)
-            compressed = output.getvalue()
+            img.save(output, format="JPEG", quality=quality)
+            compressed_bytes = output.getvalue()
+            size_kb = len(compressed_bytes) / 1024
+            if size_kb <= max_size_kb:
+                return compressed_bytes
 
-    return compressed
+        if quality > 20:
+            quality -= 5
+        else:
+            img = img.resize((img.width * 9 // 10, img.height * 9 // 10), resample=Image.Resampling.LANCZOS)
 
 def create_external_embed(bs_client, title, description, url, img_url):
     trimmed_desc = description.replace("\n", "")[:200]
-    img_data = httpx.get(img_url).content
+    try:
+        img_response = requests.get(img_url)
+        img_response.raise_for_status()
+        img_data = img_response.content
+    except requests.RequestException as e:
+        print(f"画像データの取得に失敗しました: {e}")
+        return None
+
     compressed_img_data = compress_image(img_data)
     thumb_blob = bs_client.upload_blob(compressed_img_data).blob
     return models.AppBskyEmbedExternal.Main(
@@ -67,13 +76,12 @@ def create_external_embed(bs_client, title, description, url, img_url):
 
 def post(bs_client, text, embed):
     retries = 3
-    while retries > 0:
+    for attempt in range(1, retries + 1):
         try:
             bs_client.send_post(text, embed=embed)
             break
         except Exception as e:
-            print(f"送信に失敗しました。リトライします... 残りリトライ回数: {retries-1}, エラー: {e}")
+            print(f"送信に失敗しました。リトライします... リトライ回数: {attempt}, エラー: {e}")
             time.sleep(3)
-            retries -= 1
     else:
         print("リトライ上限に達しました。送信に失敗しました。")
