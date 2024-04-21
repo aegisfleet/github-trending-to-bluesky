@@ -1,7 +1,10 @@
 import httpx
+import io
 import requests
-from bs4 import BeautifulSoup
+import time
 from atproto import models, client_utils
+from bs4 import BeautifulSoup
+from PIL import Image
 
 def fetch_webpage_metadata(url):
     try:
@@ -32,10 +35,27 @@ def format_message_with_link(title, url, introduction, content):
     formatted_content = content.replace("\n", "").replace("。", "。\n")
     return client_utils.TextBuilder().text(f"{introduction}\n\n").link(title, url).text(f"\n{formatted_content}")
 
+def compress_image(image_bytes, max_size_kb=950, quality=85):
+    img = Image.open(io.BytesIO(image_bytes))
+    img_format = img.format
+
+    with io.BytesIO() as output:
+        img.save(output, format=img_format, quality=quality)
+        compressed = output.getvalue()
+
+    while len(compressed) > max_size_kb * 1024 and quality > 10:
+        quality -= 5
+        with io.BytesIO() as output:
+            img.save(output, format=img_format, quality=quality)
+            compressed = output.getvalue()
+
+    return compressed
+
 def create_external_embed(bs_client, title, description, url, img_url):
     trimmed_desc = description.replace("\n", "")[:200]
     img_data = httpx.get(img_url).content
-    thumb_blob = bs_client.upload_blob(img_data).blob
+    compressed_img_data = compress_image(img_data)
+    thumb_blob = bs_client.upload_blob(compressed_img_data).blob
     return models.AppBskyEmbedExternal.Main(
         external=models.AppBskyEmbedExternal.External(
             title=title,
@@ -46,4 +66,14 @@ def create_external_embed(bs_client, title, description, url, img_url):
     )
 
 def post(bs_client, text, embed):
-    bs_client.send_post(text, embed=embed)
+    retries = 3
+    while retries > 0:
+        try:
+            bs_client.send_post(text, embed=embed)
+            break
+        except Exception as e:
+            print(f"送信に失敗しました。リトライします... 残りリトライ回数: {retries-1}, エラー: {e}")
+            time.sleep(3)
+            retries -= 1
+    else:
+        print("リトライ上限に達しました。送信に失敗しました。")

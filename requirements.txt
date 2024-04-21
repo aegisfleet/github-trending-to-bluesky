@@ -1,4 +1,5 @@
-requests
+atproto
 beautifulsoup4
 g4f
-atproto
+Pillow
+requests
