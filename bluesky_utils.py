@@ -19,7 +19,8 @@ def parse_html_for_metadata(html_content):
     soup = BeautifulSoup(html_content, "html.parser")
 
     title = soup.find("title").text if soup.find("title") else ""
-    description = soup.find("meta", attrs={"name": "description"}) or soup.find("meta", attrs={"property": "og:description"})
+    description = soup.find("meta", attrs={"name": "description"}) or \
+                  soup.find("meta", attrs={"property": "og:description"})
     image = soup.find("meta", attrs={"property": "og:image"})
 
     description_content = description.get("content", "") if description else ""
@@ -30,14 +31,20 @@ def parse_html_for_metadata(html_content):
 def authenticate(bs_client, username, password):
     bs_client.login(username, password)
 
+def format_message(title, introduction, content):
+    formatted_content = content.replace("\n", "").replace("。", "。\n")
+    return client_utils.TextBuilder().text(f"{introduction}\n\n{title}\n{formatted_content}")
+
 def format_message_with_link(title, url, introduction, content):
     formatted_content = content.replace("\n", "").replace("。", "。\n")
-    return client_utils.TextBuilder().text(f"{introduction}\n\n").link(title, url).text(f"\n{formatted_content}")
+    return client_utils.TextBuilder().text(f"{introduction}\n\n")\
+                                      .link(title, url)\
+                                      .text(f"\n{formatted_content}")
 
 def compress_image(image_bytes, max_size_kb=500, quality=85):
     img = Image.open(io.BytesIO(image_bytes))
 
-    if img.mode == 'RGBA' or img.mode == 'P':
+    if img.mode in ['RGBA', 'P']:
         img = img.convert('RGB')
 
     while True:
@@ -51,7 +58,8 @@ def compress_image(image_bytes, max_size_kb=500, quality=85):
         if quality > 20:
             quality -= 5
         else:
-            img = img.resize((img.width * 9 // 10, img.height * 9 // 10), resample=Image.Resampling.LANCZOS)
+            img = img.resize((img.width * 9 // 10, img.height * 9 // 10), 
+                             resample=Image.Resampling.LANCZOS)
 
 def create_external_embed(bs_client, title, description, url, img_url):
     trimmed_desc = description.replace("\n", "")[:200]
