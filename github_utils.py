@@ -1,19 +1,26 @@
 import requests
 from bs4 import BeautifulSoup
 
+import artifact_utils
+
 def get_trending_repositories(url="https://github.com/trending", count=5):
+    previous_repositories = artifact_utils.load_previous_results()
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
-    repo_elements = soup.find_all("h2", class_="h3 lh-condensed")[:count]
+    repo_elements = soup.find_all("h2", class_="h3 lh-condensed")
 
     repositories = []
-    for repo_element in repo_elements:
+    for repo_element in repo_elements[:10]:
+        if len(repositories) >= count:
+            break
         a_tag = repo_element.find("a")
         href = a_tag["href"]
-        name = href[1:]
         full_url = f"https://github.com{href}"
-        repositories.append((full_url, name))
+        if full_url not in previous_repositories:
+            name = href[1:]
+            repositories.append((full_url, name))
 
+    artifact_utils.save_results(repositories)
     return repositories
 
 def get_readme_text(repo_name):
