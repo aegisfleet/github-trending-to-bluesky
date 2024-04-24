@@ -30,15 +30,18 @@ def main():
         retries = 0
         max_retries = 3
         while retries < max_retries:
+            introduction = "今日のGitHubトレンド"
+            limit_size = 300 - len(introduction) - len(repo_name)
+            print (f"limit_size: {limit_size}")
             message = gpt_utils.get_description(
                 gpt_client, 
                 f"{repo_name}リポジトリは誰がいつどこで使うものか"
-                "250文字以下で3行にまとめて欲しい。\n回答は日本語で強調文字は使用せず簡素にする。"
-                f"\n以下にリポジトリのREADMEを記載する。\n\n{readme_text}"
+                f"{limit_size}文字以下で3行にまとめて欲しい。\n回答は日本語で強調文字は使用せず簡素にする。"
+                f"\n以下にリポジトリのREADMEを記載する。\n\n{readme_text}",
+                limit_size
             )
-            title, description, image_url = bluesky_utils.fetch_webpage_metadata(full_url)
             post_text = bluesky_utils.format_message_with_link(
-                repo_name, full_url, "今日のGitHubトレンド", message
+                repo_name, full_url, introduction, message
             )
 
             if len(post_text.build_text()) < 300:
@@ -51,6 +54,7 @@ def main():
             print("300文字以内の文字を生成できませんでした。")
             continue
 
+        title, description, image_url = bluesky_utils.fetch_webpage_metadata(full_url)
         print(post_text.build_text(), image_url, sep="\n")
 
         bluesky_utils.authenticate(bs_client, user_handle, user_password)

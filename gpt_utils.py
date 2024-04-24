@@ -8,7 +8,7 @@ def setup_cookies():
         "_U": "cookie value"
     })
 
-def get_description(gpt_client, text, max_retries=3):
+def get_description(gpt_client, text, limit_size, max_retries=3):
     def attempt_request(retry_count):
         try:
             response = gpt_client.chat.completions.create(
@@ -19,9 +19,9 @@ def get_description(gpt_client, text, max_retries=3):
                 ],
             )
             content = response.choices[0].message.content
-            if len(content) > 250:
+            if len(content) > limit_size:
                 raise ValueError(
-                    "レスポンスの文字数が250文字を超えています。"
+                    f"レスポンスの文字数が{limit_size}文字を超えています。"
                 )
             return content
         except RateLimitError:
@@ -31,7 +31,6 @@ def get_description(gpt_client, text, max_retries=3):
             time.sleep(30)
         except ValueError:
             print(
-                f"ValueErrorが発生しました。レスポンスの文字数が250文字を超えています。"
                 f"リトライ回数: {retry_count}\n{content}"
             )
             time.sleep(3)
