@@ -63,16 +63,27 @@ def compress_image(image_bytes, max_size_kb=500, quality=85):
 
 def create_external_embed(bs_client, title, description, url, img_url):
     trimmed_desc = description.replace("\n", "")[:200]
-    try:
-        img_response = requests.get(img_url)
-        img_response.raise_for_status()
-        img_data = img_response.content
-    except requests.RequestException as e:
-        print(f"画像データの取得に失敗しました: {e}")
-        return None
+    img_data = None
+    thumb_blob = None
+    retries = 3
 
-    compressed_img_data = compress_image(img_data)
-    thumb_blob = bs_client.upload_blob(compressed_img_data).blob
+    for attempt in range(1, retries + 1):
+        try:
+            img_response = requests.get(img_url)
+            img_response.raise_for_status()
+            img_data = img_response.content
+            break
+        except requests.RequestException as e:
+            print(f"画像データの取得に失敗しました: {e} リトライ回数: {attempt}")
+            if attempt < retries:
+                time.sleep(10)
+            else:
+                print("画像の取得に最終的に失敗しました。サムネイルなしで進めます。")
+
+    if img_data is not None:
+        compressed_img_data = compress_image(img_data)
+        thumb_blob = bs_client.upload_blob(compressed_img_data).blob
+
     return models.AppBskyEmbedExternal.Main(
         external=models.AppBskyEmbedExternal.External(
             title=title,

@@ -1,3 +1,4 @@
+import re
 import requests
 from bs4 import BeautifulSoup
 
@@ -23,6 +24,12 @@ def get_trending_repositories(url="https://github.com/trending", count=5):
     artifact_utils.save_results(repositories)
     return repositories
 
+def remove_html_tags_and_lists(text):
+    clean_text = re.sub('<.*?>', '', text)
+    clean_text = re.sub('^[ \t]*[-*+][ \t].*$', '', clean_text, flags=re.MULTILINE)
+    clean_text = re.sub('\n\s*\n', '\n', clean_text)
+    return clean_text
+
 def get_readme_text(repo_name):
     readme_urls = [
         f"https://raw.githubusercontent.com/{repo_name}/main/README.md",
@@ -31,5 +38,6 @@ def get_readme_text(repo_name):
     for url in readme_urls:
         response = requests.get(url)
         if response.status_code == 200:
-            return response.text[:2000]
+            text = response.text
+            return remove_html_tags_and_lists(text)[:2000]
     return ''
