@@ -1,12 +1,6 @@
 import g4f
 import time
-from g4f.cookies import set_cookies
 from g4f.errors import RateLimitError
-
-def setup_cookies():
-    set_cookies(".bing.com", {
-        "_U": "cookie value"
-    })
 
 def get_description(gpt_client, text, limit_size, max_retries=3):
     def attempt_request(retry_count):

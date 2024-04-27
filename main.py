@@ -46,8 +46,6 @@ def main():
 
     user_handle, user_password = sys.argv[1], sys.argv[2]
 
-    gpt_utils.setup_cookies()
-
     targets = getattr(config["utils_module"], config["trending_function"])()
 
     gpt_client = GPTClient()
