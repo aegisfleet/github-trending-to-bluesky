@@ -23,9 +23,9 @@ def get_description(gpt_client, text, limit_size, max_retries=3):
                 f"RateLimitErrorが発生しました。リトライ回数: {retry_count}"
             )
             time.sleep(30)
-        except ValueError:
+        except ValueError as e:
             print(
-                f"リトライ回数: {retry_count}\n{content}"
+                f"リトライ回数: {retry_count}\n{e}\n{content}"
             )
             time.sleep(3)
         except Exception as e:
