@@ -2,6 +2,7 @@ import io
 import requests
 import time
 from atproto import models, client_utils
+from atproto_client.exceptions import UnauthorizedError
 from bs4 import BeautifulSoup
 from PIL import Image
 
@@ -28,8 +29,20 @@ def parse_html_for_metadata(html_content):
 
     return title, description_content, image_url
 
-def authenticate(bs_client, username, password):
-    bs_client.login(username, password)
+def authenticate(bs_client, username, password, retries=3, wait_time=5):
+    for attempt in range(retries):
+        try:
+            bs_client.login(username, password)
+            print("Authentication successful")
+            return
+        except UnauthorizedError as e:
+            print(f"Attempt {attempt + 1} failed: {e}")
+            if attempt < retries - 1:
+                print(f"Retrying in {wait_time} seconds...")
+                time.sleep(wait_time)
+            else:
+                print("All retry attempts failed. Please check your credentials.")
+                raise e
 
 def format_message(title, introduction, content):
     formatted_content = content.replace("\n", "").replace("。", "。\n")

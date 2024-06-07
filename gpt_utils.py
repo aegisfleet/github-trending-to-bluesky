@@ -1,31 +1,21 @@
-import g4f
+import google.generativeai as genai
 import time
-from g4f.errors import RateLimitError
 
-def get_description(gpt_client, text, limit_size, max_retries=3):
+def get_description(api_key, text, limit_size, max_retries=3):
+    genai.configure(api_key=f"{api_key}")
+    model = genai.GenerativeModel('gemini-1.5-flash')
+
     def attempt_request(retry_count):
         try:
-            response = gpt_client.chat.completions.create(
-                model="gpt-4-turbo",
-                provider=g4f.Provider.Bing,
-                messages=[
-                    {"role": "user", "content": f"{text}"}
-                ],
-            )
-            content = response.choices[0].message.content
-            if len(content) > limit_size:
+            response = model.generate_content(f"{text}")
+            if len(response.text) > limit_size:
                 raise ValueError(
                     f"レスポンスの文字数が{limit_size}文字を超えています。"
                 )
-            return content
-        except RateLimitError:
-            print(
-                f"RateLimitErrorが発生しました。リトライ回数: {retry_count}"
-            )
-            time.sleep(30)
+            return response.text
         except ValueError as e:
             print(
-                f"リトライ回数: {retry_count}\n{e}\n{content}"
+                f"リトライ回数: {retry_count}\n{e}\n{response.text}"
             )
             time.sleep(3)
         except Exception as e:

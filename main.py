@@ -1,6 +1,5 @@
 import sys
 from atproto import Client as BSClient
-from g4f.client import Client as GPTClient
 import bluesky_utils
 import gpt_utils
 import github_utils
@@ -13,17 +12,17 @@ config = {
 }
 
 def print_usage_and_exit():
-    print("使用法: python main.py <ユーザーハンドル> <パスワード>")
+    print("使用法: python main.py <BlueSkyのユーザーハンドル> <BlueSkyのパスワード> <GeminiのAPIキー>")
     sys.exit(1)
 
-def generate_post_text(gpt_client, full_url, repo_name, readme_text, introduction):
+def generate_post_text(api_key, full_url, repo_name, readme_text, introduction):
     retries = 0
     max_retries = 3
     while retries < max_retries:
         limit_size = 300 - len(introduction) - len(repo_name)
         print(f"limit_size: {limit_size}")
         message = gpt_utils.get_description(
-            gpt_client,
+            api_key,
             f"{repo_name}リポジトリは誰がいつどこで使うものか"
             f"{limit_size}文字以下で3行にまとめて欲しい。\n回答は日本語で強調文字は使用せず簡素にする。"
             f"\n以下にリポジトリのREADMEを記載する。\n\n{readme_text}",
@@ -41,21 +40,20 @@ def generate_post_text(gpt_client, full_url, repo_name, readme_text, introductio
     return None
 
 def main():
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 4:
         print_usage_and_exit()
 
-    user_handle, user_password = sys.argv[1], sys.argv[2]
+    user_handle, user_password, api_key = sys.argv[1], sys.argv[2], sys.argv[3]
 
     targets = getattr(config["utils_module"], config["trending_function"])()
 
-    gpt_client = GPTClient()
     bs_client = BSClient()
 
     for full_url, repo_name in targets:
         print(f"\nURL: {full_url}\nName: {repo_name}")
 
         readme_text = getattr(config["utils_module"], config["readme_function"])(repo_name)
-        post_text = generate_post_text(gpt_client, full_url, repo_name, readme_text, config["introduction"])
+        post_text = generate_post_text(api_key, full_url, repo_name, readme_text, config["introduction"])
         if not post_text:
             continue
 

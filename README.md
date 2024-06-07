@@ -29,8 +29,8 @@ pip install -r requirements.txt
 
 アプリケーションを実行するには、以下のコマンドを使用します。
 
-```
-python main.py <ユーザーハンドル> <パスワード>
+```text
+python main.py <BlueSkyのユーザーハンドル> <BlueSkyのパスワード> <GeminiのAPIキー>
 ```
 
 プログラムは、GitHubのトレンドから最も人気のあるリポジトリを検出し、その内容を要約してBlueskyに投稿します。  
@@ -41,14 +41,14 @@ python main.py <ユーザーハンドル> <パスワード>
 このアプリケーションは以下の技術を使用しています。
 
 - Python: メインのプログラミング言語
-- BeautifulSoup: HTMLの解析
+- beautifulsoup4: HTMLの解析
 - requests: HTTPリクエスト
-- g4f: GPTのクライアントライブラリ
+- google-generativeai: Gemini
 - atproto: BlueskyのAPIクライアント
 
 また、開発には以下を使用しています。
 
-- [gpt4free](https://github.com/xtekky/gpt4free): 生成AIを無料で利用するためのライブラリ
+- [Gemini](https://ai.google.dev/gemini-api?hl=ja): Googleの生成AI API
 - [リートン](https://wrtn.jp/): コード生成やテキスト生成に利用しているAIサービス
 - [AWS CodeWhisperer](https://aws.amazon.com/jp/codewhisperer/): コード生成に使用しているAIツール
 
