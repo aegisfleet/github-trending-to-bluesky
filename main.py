@@ -24,7 +24,7 @@ def generate_post_text(api_key, full_url, repo_name, readme_text, introduction):
         message = gpt_utils.get_description(
             api_key,
             f"{repo_name}リポジトリは誰がいつどこで使うものか"
-            f"{limit_size}文字以下で3行にまとめて欲しい。\n回答は日本語で強調文字は使用せず簡素にする。"
+            "[limit_size]文字以下で3行にまとめて欲しい。\n回答は日本語で強調文字は使用せず簡素にする。"
             f"\n以下にリポジトリのREADMEを記載する。\n\n{readme_text}",
             limit_size
         )

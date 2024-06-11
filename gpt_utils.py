@@ -7,7 +7,8 @@ def get_description(api_key, text, limit_size, max_retries=3):
 
     def attempt_request(retry_count):
         try:
-            response = model.generate_content(f"{text}")
+            prompt = text.replace("[limit_size]", str(limit_size - (retry_count * 20)))
+            response = model.generate_content(f"{prompt}")
             if len(response.text) > limit_size:
                 raise ValueError(
                     f"レスポンスの文字数が{limit_size}文字を超えています。"
