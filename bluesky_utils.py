@@ -2,7 +2,7 @@ import io
 import requests
 import time
 from atproto import models, client_utils
-from atproto_client.exceptions import UnauthorizedError
+from atproto_client.exceptions import UnauthorizedError, NetworkError
 from bs4 import BeautifulSoup
 from PIL import Image
 
@@ -95,7 +95,17 @@ def create_external_embed(bs_client, title, description, url, img_url):
 
     if img_data is not None:
         compressed_img_data = compress_image(img_data)
-        thumb_blob = bs_client.upload_blob(compressed_img_data).blob
+
+        for attempt in range(1, retries + 1):
+            try:
+                thumb_blob = bs_client.upload_blob(compressed_img_data).blob
+                break
+            except NetworkError as e:
+                print(f"サムネイルのアップロードに失敗しました: {e} リトライ回数: {attempt}")
+                if attempt < retries:
+                    time.sleep(10)
+                else:
+                    print("サムネイルのアップロードに最終的に失敗しました。サムネイルなしで進めます。")
 
     return models.AppBskyEmbedExternal.Main(
         external=models.AppBskyEmbedExternal.External(
