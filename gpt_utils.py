@@ -1,6 +1,15 @@
 import google.generativeai as genai
 import time
 
+def remove_last_sentence(text):
+    sentences = text.split('。')
+    if sentences[-1] == '':
+        sentences.pop()
+    if sentences:
+        sentences.pop()
+    result = '。'.join(sentences) + '。'
+    return result
+
 def get_description(api_key, text, limit_size, max_retries=3):
     genai.configure(api_key=f"{api_key}")
     model = genai.GenerativeModel('gemini-1.5-flash')
@@ -29,6 +38,7 @@ def get_description(api_key, text, limit_size, max_retries=3):
         if retry_count < max_retries:
             return attempt_request(retry_count + 1)
         else:
-            raise Exception("最大リトライ回数に達しました。")
+            print("最大リトライ回数に達しました。")
+            return remove_last_sentence(response.text)
 
     return attempt_request(0)
