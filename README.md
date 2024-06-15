@@ -3,10 +3,6 @@
 GitHub Trending to Blueskyは、[GitHubのトレンド](https://github.com/trending)にある最も人気のあるリポジトリの内容を要約し、Blueskyに投稿するPython製のアプリケーションです。  
 このアプリケーションは、技術トレンドに迅速に反応し、Blueskyのフォロワーに価値ある情報を提供することを目的としています。
 
-## 関連記事
-
-- [Webスクレイピング×生成AI×SNSで新しい価値が生まれる？すべて無料でBOTを作った話](https://note.com/aegisfleet/n/nc8362f717cd9)
-
 ## 機能
 
 - GitHubトレンドの最上位リポジトリを自動検出
@@ -51,6 +47,21 @@ python main.py <BlueSkyのユーザーハンドル> <BlueSkyのパスワード> 
 - [Gemini](https://ai.google.dev/gemini-api?hl=ja): Googleの生成AI API
 - [リートン](https://wrtn.jp/): コード生成やテキスト生成に利用しているAIサービス
 - [AWS CodeWhisperer](https://aws.amazon.com/jp/codewhisperer/): コード生成に使用しているAIツール
+
+## 関連記事
+
+- [Webスクレイピング×生成AI×SNSで新しい価値が生まれる？すべて無料でBOTを作った話](https://note.com/aegisfleet/n/nc8362f717cd9)
+
+## 関連BOT
+
+| カテゴリ | 名称 | 投稿時間 |
+|---|---|---|
+| リポジトリの内容を要約 | [デイリーGitHubトレンド](https://bsky.app/profile/dailygithubtrends.bsky.social) | 毎日20時 |
+| リポジトリの内容を要約 | [デイリーHuggingFaceトレンド](https://bsky.app/profile/huggingfacetrends.bsky.social) | 毎日19時 |
+| 記事の内容を要約 | [デイリーQiitaトレンド](https://bsky.app/profile/dailyqiitatrends.bsky.social) | 毎日7時 |
+| 記事の内容を要約 | [デイリーZennトレンド](https://bsky.app/profile/dailyzenntrends.bsky.social) | 毎日6時/18時 |
+| 記事の内容を要約 | [デイリーAIトレンド](https://bsky.app/profile/dailygenaitrends.bsky.social) | 毎日13時/16時 |
+| 指標値のまとめと記事の要約 | [デイリーマーケットトレンド](https://bsky.app/profile/dailymarkettrends.bsky.social) | 6時/12時/15時/20時 |
 
 ## マスコット
 
