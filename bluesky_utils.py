@@ -3,7 +3,7 @@ import requests
 import time
 from atproto import models, client_utils
 from atproto_client.exceptions import UnauthorizedError, NetworkError
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from PIL import Image
 
 def fetch_webpage_metadata(url):
@@ -19,15 +19,17 @@ def fetch_webpage_metadata(url):
 def parse_html_for_metadata(html_content):
     soup = BeautifulSoup(html_content, "html.parser")
 
-    title = soup.find("title").text if soup.find("title") else ""
+    title = soup.find("title")
+    title_text = title.get_text() if title else ""
+
     description = soup.find("meta", attrs={"name": "description"}) or \
                   soup.find("meta", attrs={"property": "og:description"})
     image = soup.find("meta", attrs={"property": "og:image"})
 
-    description_content = description.get("content", "") if description else ""
-    image_url = image.get("content", "") if image else ""
+    description_content = description["content"] if description and isinstance(description, Tag) else ""
+    image_url = image["content"] if image and isinstance(image, Tag) else ""
 
-    return title, description_content, image_url
+    return title_text, description_content, image_url
 
 def authenticate(bs_client, username, password, retries=3, wait_time=5):
     for attempt in range(retries):

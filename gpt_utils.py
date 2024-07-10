@@ -15,17 +15,19 @@ def get_description(api_key, text, limit_size, max_retries=3):
     model = genai.GenerativeModel('gemini-1.5-flash')
 
     def attempt_request(retry_count):
+        response_text = ""
         try:
             prompt = text.replace("[limit_size]", str(limit_size - (retry_count * 20)))
             response = model.generate_content(f"{prompt}")
-            if len(response.text) > limit_size:
+            response_text = response.text
+            if len(response_text) > limit_size:
                 raise ValueError(
                     f"レスポンスの文字数が{limit_size}文字を超えています。"
                 )
-            return response.text
+            return response_text
         except ValueError as e:
             print(
-                f"リトライ回数: {retry_count}\n{e}\n{response.text}"
+                f"リトライ回数: {retry_count}\n{e}\n{response_text}"
             )
             time.sleep(3)
         except Exception as e:
@@ -39,6 +41,6 @@ def get_description(api_key, text, limit_size, max_retries=3):
             return attempt_request(retry_count + 1)
         else:
             print("最大リトライ回数に達しました。")
-            return remove_last_sentence(response.text)
+            return remove_last_sentence(response_text)
 
     return attempt_request(0)

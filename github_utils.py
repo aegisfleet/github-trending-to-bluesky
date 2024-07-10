@@ -25,9 +25,9 @@ def get_trending_repositories(url="https://github.com/trending", count=5):
     return repositories
 
 def remove_html_tags_and_lists(text):
-    clean_text = re.sub('<.*?>', '', text)
-    clean_text = re.sub('^[ \t]*[-*+][ \t].*$', '', clean_text, flags=re.MULTILINE)
-    clean_text = re.sub('\n\s*\n', '\n', clean_text)
+    clean_text = re.sub(r'<.*?>', '', text)
+    clean_text = re.sub(r'^[ \t]*[-*+][ \t].*$', '', clean_text, flags=re.MULTILINE)
+    clean_text = re.sub(r'\n\s*\n', '\n', clean_text)
     return clean_text
 
 def get_readme_text(repo_name):
