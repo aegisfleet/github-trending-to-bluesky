@@ -12,7 +12,7 @@ def remove_last_sentence(text):
 
 def get_description(api_key, text, limit_size, max_retries=3):
     genai.configure(api_key=f"{api_key}")
-    model = genai.GenerativeModel('gemini-1.5-flash-exp-0827')
+    model = genai.GenerativeModel('gemini-1.5-flash-002')
 
     def attempt_request(retry_count):
         response_text = ""

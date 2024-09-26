@@ -47,11 +47,11 @@ def authenticate(bs_client, username, password, retries=3, wait_time=5):
                 raise e
 
 def format_message(title, introduction, content):
-    formatted_content = content.replace("\n", "").replace("。", "。\n")
+    formatted_content = content.strip().replace("  ", "").replace("\n", "").replace("。", "。\n")
     return client_utils.TextBuilder().text(f"{introduction}\n\n{title}\n{formatted_content}")
 
 def format_message_with_link(title, url, introduction, content):
-    formatted_content = content.replace("\n", "").replace("。", "。\n")
+    formatted_content = content.strip().replace("  ", "").replace("\n", "").replace("。", "。\n")
     return client_utils.TextBuilder().text(f"{introduction}\n\n")\
                                       .link(title, url)\
                                       .text(f"\n{formatted_content}")
