@@ -23,7 +23,7 @@ def generate_post_text(api_key, full_url, repo_name, readme_text, introduction):
         print(f"limit_size: {limit_size}")
         message = gpt_utils.get_description(
             api_key,
-            "以下の仕様に従い、リポジトリの使い方の説明文を3行にまとめて欲しい。\n\n"
+            "以下の仕様に従い、リポジトリが何を目的に作成されたのかをまとめて欲しい。\n\n"
             "仕様:\n"
             "- 回答は[limit_size]文字以下にする。\n"
             "- 回答は日本語で強調文字は使用せず簡素にする。\n"
