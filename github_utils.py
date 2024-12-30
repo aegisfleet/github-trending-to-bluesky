@@ -33,7 +33,9 @@ def remove_html_tags_and_lists(text):
 def get_readme_text(repo_name):
     readme_urls = [
         f"https://raw.githubusercontent.com/{repo_name}/main/README.md",
-        f"https://raw.githubusercontent.com/{repo_name}/master/README.md"
+        f"https://raw.githubusercontent.com/{repo_name}/master/README.md",
+        f"https://raw.githubusercontent.com/{repo_name}/main/README.rst",
+        f"https://raw.githubusercontent.com/{repo_name}/master/README.rst"
     ]
     for url in readme_urls:
         response = requests.get(url)
