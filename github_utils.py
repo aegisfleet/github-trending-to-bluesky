@@ -35,7 +35,9 @@ def get_readme_text(repo_name):
         f"https://raw.githubusercontent.com/{repo_name}/main/README.md",
         f"https://raw.githubusercontent.com/{repo_name}/master/README.md",
         f"https://raw.githubusercontent.com/{repo_name}/main/README.rst",
-        f"https://raw.githubusercontent.com/{repo_name}/master/README.rst"
+        f"https://raw.githubusercontent.com/{repo_name}/master/README.rst",
+        f"https://raw.githubusercontent.com/{repo_name}/main/readme.md",
+        f"https://raw.githubusercontent.com/{repo_name}/master/readme.md"
     ]
     for url in readme_urls:
         response = requests.get(url)
