@@ -1,5 +1,6 @@
 import google.generativeai as genai
 import time
+import gemini_model
 
 def remove_last_sentence(text):
     sentences = text.split('。')
@@ -12,7 +13,7 @@ def remove_last_sentence(text):
 
 def get_description(api_key, text, limit_size, max_retries=3):
     genai.configure(api_key=f"{api_key}")
-    model = genai.GenerativeModel('gemini-2.0-flash')
+    model = genai.GenerativeModel(gemini_model.MODEL_NAME)
 
     def attempt_request(retry_count):
         response_text = ""
