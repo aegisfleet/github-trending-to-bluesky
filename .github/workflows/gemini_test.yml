@@ -26,4 +26,4 @@ jobs:
       - name: Test Gemini API
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python test_gemini_api.py --api_key "${{ secrets.GEMINI_API_KEY }}"
+        run: python test_gemini_api.py "${{ secrets.GEMINI_API_KEY }}"
