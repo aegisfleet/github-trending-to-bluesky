@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 11 * * *'
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   run_script:
@@ -44,3 +46,25 @@ jobs:
           name: artifact
           path: tmp/
           retention-days: 10
+
+  test_gemini_api:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' # Ensure it only runs on pull_request events
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Pythonの実行環境をセットアップ
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: 依存関係のインストール
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Gemini APIをテスト
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python test_gemini_api.py --api_key "${{ secrets.GEMINI_API_KEY }}"
