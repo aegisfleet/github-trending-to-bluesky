@@ -1,4 +1,4 @@
-MODEL_NAME = 'gemini-1.0-pro' # Changed to a more general model for text generation
+MODEL_NAME = 'gemini-2.5-flash-preview-05-20'
 
 import google.generativeai as genai
 
