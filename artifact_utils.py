@@ -1,7 +1,7 @@
 import os
 
 def save_results(models):
-    folder_path = "tmp"
+    folder_path = os.environ.get("ARTIFACTS_DIR", "tmp")
     file_path = os.path.join(folder_path, "previous_result.txt")
 
     if not os.path.exists(folder_path):
@@ -12,7 +12,7 @@ def save_results(models):
             file.write(f"{model[0]}\n")
 
 def load_previous_results():
-    folder_path = "tmp"
+    folder_path = os.environ.get("ARTIFACTS_DIR", "tmp")
     file_path = os.path.join(folder_path, "previous_result.txt")
 
     try:

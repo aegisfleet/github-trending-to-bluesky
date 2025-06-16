@@ -1,4 +1,4 @@
-name: スクリプトを実行する
+name: Run Script
 
 on:
   workflow_dispatch:
@@ -14,13 +14,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: リポジトリをチェックアウト
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: フォルダ作成
-        run: mkdir -p ${{ runner.temp }}/artifacts/
-
-      - name: 前回の成果物をダウンロード
+      - name: Download previous artifact
         uses: dawidd6/action-download-artifact@v11
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -28,31 +25,25 @@ jobs:
           path: ${{ runner.temp }}/artifacts/
           if_no_artifact_found: ignore
 
-      - name: 成果物の内容を検証
-        run: |
-          if [ -f "${{ runner.temp }}/artifacts/requirements.txt" ]; then
-            echo "Error: Artifact contains a requirements.txt file, which is not allowed."
-            exit 1
-          fi
-
-      - name: Pythonの実行環境をセットアップ
+      - name: Setup Python environment
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: 依存関係のインストール
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: リポジトリ内のPythonファイルを実行
+      - name: Run Python script
         env:
           BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
           BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ARTIFACTS_DIR: ${{ runner.temp }}/artifacts/
         run: python main.py "${BLUESKY_HANDLE}" "${BLUESKY_PASSWORD}" "${GEMINI_API_KEY}"
 
-      - name: 成果物をアップロード
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: artifact
