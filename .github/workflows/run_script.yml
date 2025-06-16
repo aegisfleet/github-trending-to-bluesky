@@ -18,7 +18,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           name: artifact
-          path: tmp
+          path: ${{ runner.temp }}/artifacts/
           if_no_artifact_found: ignore
 
       - name: Pythonの実行環境をセットアップ
@@ -42,5 +42,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifact
-          path: tmp/
+          path: ${{ runner.temp }}/artifacts/
           retention-days: 10
