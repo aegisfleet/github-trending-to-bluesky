@@ -1,13 +1,15 @@
-import argparse
+import os
+import sys
 from gemini_model import generate_text_with_gemini
 
 def main():
-    parser = argparse.ArgumentParser(description="Test Gemini API")
-    parser.add_argument("api_key", help="Gemini API key")
-    args = parser.parse_args()
+    api_key = os.environ.get("GOOGLE_API_KEY")
+    if not api_key:
+        print("Error: GOOGLE_API_KEY environment variable not set.")
+        sys.exit(1)
 
     prompt = "Write a short story about a friendly robot."
-    generated_text = generate_text_with_gemini(api_key=args.api_key, prompt_text=prompt)
+    generated_text = generate_text_with_gemini(api_key=api_key, prompt_text=prompt)
 
     if generated_text:
         print("Gemini API test successful!")
