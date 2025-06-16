@@ -17,9 +17,11 @@ jobs:
       - name: リポジトリをチェックアウト
         uses: actions/checkout@v4
 
-      - name: 前回の成果物をダウンロード
+      - name: フォルダ作成
         run: mkdir -p ${{ runner.temp }}/artifacts/
-      - uses: dawidd6/action-download-artifact@v11
+
+      - name: 前回の成果物をダウンロード
+        uses: dawidd6/action-download-artifact@v11
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           name: artifact
