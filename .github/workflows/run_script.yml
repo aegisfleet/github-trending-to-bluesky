@@ -25,6 +25,7 @@ jobs:
           name: artifact
           path: ${{ runner.temp }}/artifacts/
           if_no_artifact_found: ignore
+
       - name: 成果物の内容を検証
         run: |
           if [ -f "${{ runner.temp }}/artifacts/requirements.txt" ]; then
