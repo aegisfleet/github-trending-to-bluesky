@@ -43,7 +43,7 @@ jobs:
         run: python main.py "${BLUESKY_HANDLE}" "${BLUESKY_PASSWORD}" "${GEMINI_API_KEY}"
 
       - name: 成果物をアップロード
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: artifact
           path: tmp/
