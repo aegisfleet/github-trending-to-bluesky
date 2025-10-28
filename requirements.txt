@@ -1,5 +1,6 @@
 atproto
 beautifulsoup4
 google-generativeai
+packaging
 Pillow
 requests
