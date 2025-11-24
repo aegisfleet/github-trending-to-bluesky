@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: リポジトリをチェックアウト
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: 前回の成果物をダウンロード
         uses: dawidd6/action-download-artifact@v11
