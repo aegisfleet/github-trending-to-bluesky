@@ -21,6 +21,10 @@ def get_description(api_key, text, limit_size, max_retries=3):
             prompt = text.replace("[limit_size]", str(limit_size - (retry_count * 20)))
             response = model.generate_content(f"{prompt}")
             response_text = response.text
+            if not response_text or response_text.strip() == "":
+                raise ValueError(
+                    f"レスポンスが空です。"
+                )
             if len(response_text) > limit_size:
                 raise ValueError(
                     f"レスポンスの文字数が{limit_size}文字を超えています。"
