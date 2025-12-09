@@ -8,8 +8,10 @@ def remove_last_sentence(text):
         sentences.pop()
     if sentences:
         sentences.pop()
-    result = '。'.join(sentences) + '。'
-    return result
+    if sentences:
+        result = '。'.join(sentences) + '。'
+        return result
+    return ""
 
 def get_description(api_key, text, limit_size, max_retries=3):
     genai.configure(api_key=f"{api_key}")
