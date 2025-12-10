@@ -13,7 +13,7 @@ def remove_last_sentence(text):
         return result
     return ""
 
-def get_description(api_key, text, limit_size, max_retries=3):
+def get_description(api_key, text, limit_size, max_retries=5):
     genai.configure(api_key=f"{api_key}")
     model = genai.GenerativeModel(gemini_model.MODEL_NAME)
 
@@ -42,7 +42,10 @@ def get_description(api_key, text, limit_size, max_retries=3):
                 f"予期しないエラーが発生しました。リトライ回数: {retry_count}\n"
                 f"エラータイプ: {type(e).__name__}\nエラーメッセージ: {e}"
             )
-            time.sleep(30)
+
+            wait_time = 30 * (2 ** retry_count)
+            print(f"{wait_time}秒待機中...")
+            time.sleep(wait_time)
 
         if retry_count < max_retries:
             return attempt_request(retry_count + 1)
