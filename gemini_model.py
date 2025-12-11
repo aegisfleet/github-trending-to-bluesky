@@ -1,4 +1,4 @@
-MODEL_NAME = 'gemini-2.0-flash'
+MODEL_NAME = 'gemini-2.5-flash'
 
 import google.generativeai as genai
 
