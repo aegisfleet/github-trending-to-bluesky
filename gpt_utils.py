@@ -43,7 +43,7 @@ def get_description(api_key, text, limit_size, max_retries=5):
                 f"エラータイプ: {type(e).__name__}\nエラーメッセージ: {e}"
             )
 
-            wait_time = 30 * (2 ** retry_count)
+            wait_time = 60
             print(f"{wait_time}秒待機中...")
             time.sleep(wait_time)
 
