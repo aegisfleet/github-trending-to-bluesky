@@ -1,4 +1,4 @@
-MODEL_NAME = 'gemma-3-27b-it'
+MODEL_NAME = 'gemma-4-31b-it'
 
 import google.generativeai as genai
 
