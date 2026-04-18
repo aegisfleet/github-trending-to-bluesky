@@ -1,6 +1,19 @@
 MODEL_NAME = 'gemma-4-31b-it'
 
-import google.generativeai as genai
+from google import genai
+
+
+def extract_answer_text(response):
+    """レスポンスから thinking パートを除外し、最終回答テキストのみを返す"""
+    parts = response.candidates[0].content.parts
+    answer_texts = []
+    for part in parts:
+        if getattr(part, 'thought', False):
+            continue
+        if part.text:
+            answer_texts.append(part.text)
+    return "".join(answer_texts)
+
 
 def generate_text_with_gemini(api_key: str, prompt_text: str) -> str | None:
     """
@@ -14,10 +27,12 @@ def generate_text_with_gemini(api_key: str, prompt_text: str) -> str | None:
         The generated text, or None if an error occurred.
     """
     try:
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel(MODEL_NAME)
-        response = model.generate_content(prompt_text)
-        return response.text
+        client = genai.Client(api_key=api_key)
+        response = client.models.generate_content(
+            model=MODEL_NAME,
+            contents=prompt_text,
+        )
+        return extract_answer_text(response)
     except Exception as e:
         print(f"Error generating text with Gemini: {e}")
         return None

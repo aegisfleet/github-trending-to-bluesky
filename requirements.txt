@@ -1,6 +1,6 @@
 atproto
 beautifulsoup4
-google-generativeai
+google-genai
 packaging
 Pillow
 requests

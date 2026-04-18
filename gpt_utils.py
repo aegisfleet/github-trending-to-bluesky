@@ -1,4 +1,4 @@
-import google.generativeai as genai
+from google import genai
 import time
 import gemini_model
 
@@ -14,15 +14,17 @@ def remove_last_sentence(text):
     return ""
 
 def get_description(api_key, text, limit_size, max_retries=5):
-    genai.configure(api_key=f"{api_key}")
-    model = genai.GenerativeModel(gemini_model.MODEL_NAME)
+    client = genai.Client(api_key=api_key)
 
     def attempt_request(retry_count):
         response_text = ""
         try:
             prompt = text.replace("[limit_size]", str(limit_size - (retry_count * 20)))
-            response = model.generate_content(f"{prompt}")
-            response_text = response.text
+            response = client.models.generate_content(
+                model=gemini_model.MODEL_NAME,
+                contents=prompt,
+            )
+            response_text = gemini_model.extract_answer_text(response)
             if not response_text or response_text.strip() == "":
                 raise ValueError(
                     f"レスポンスが空です。"
