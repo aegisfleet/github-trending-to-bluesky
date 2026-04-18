@@ -27,7 +27,7 @@ def get_description(api_key, text, limit_size, max_retries=5):
             response_text = gemini_model.extract_answer_text(response)
             if not response_text or response_text.strip() == "":
                 raise ValueError(
-                    f"レスポンスが空です。"
+                    "レスポンスが空です。"
                 )
             if len(response_text) > limit_size:
                 raise ValueError(
