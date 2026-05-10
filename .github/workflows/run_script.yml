@@ -22,8 +22,15 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           name: artifact
-          path: tmp
+          path: ${{ runner.temp }}/artifacts
           if_no_artifact_found: ignore
+
+      - name: 成果物を配置
+        run: |
+          mkdir -p tmp
+          if [ -f "${{ runner.temp }}/artifacts/previous_result.txt" ]; then
+            cp "${{ runner.temp }}/artifacts/previous_result.txt" tmp/previous_result.txt
+          fi
 
       - name: Pythonの実行環境をセットアップ
         uses: actions/setup-python@v6
