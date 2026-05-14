@@ -43,7 +43,7 @@ def get_readme_text(repo_name):
         response = requests.get(url)
         if response.status_code == 200:
             text = response.text
-            
+
             # シンボリックリンクの検出 (1行のみでパスのように見える場合)
             lines = text.strip().split('\n')
             if len(lines) == 1 and (text.strip().endswith('.md') or text.strip().endswith('.rst')) and ' ' not in text.strip():
@@ -53,7 +53,6 @@ def get_readme_text(repo_name):
                 symlink_response = requests.get(new_url)
                 if symlink_response.status_code == 200:
                     text = symlink_response.text
-            
+
             return remove_html_tags_and_lists(text)[:2000]
     return ''
-
