@@ -50,6 +50,7 @@ def main():
     targets = getattr(config["utils_module"], config["trending_function"])()
 
     bs_client = BSClient()
+    auth_client = bluesky_utils.authenticate(bs_client, user_handle, user_password)
 
     for full_url, repo_name in targets:
         print(f"\nURL: {full_url}\nName: {repo_name}")
@@ -62,7 +63,6 @@ def main():
         title, description, image_url = bluesky_utils.fetch_webpage_metadata(full_url)
         print(post_text.build_text(), image_url, sep="\n")
 
-        auth_client = bluesky_utils.authenticate(bs_client, user_handle, user_password)
         embed_external = bluesky_utils.create_external_embed(
             auth_client, title, description, full_url, image_url
         )
