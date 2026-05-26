@@ -18,7 +18,7 @@ GitHub Trending to Blueskyは、[GitHubのトレンド](https://github.com/trend
 ```bash
 git clone https://github.com/aegisfleet/github-trending-to-bluesky.git
 cd github-trending-to-bluesky
-pip install -r requirements.txt
+uv sync
 ```
 
 ## 使用方法
@@ -26,7 +26,7 @@ pip install -r requirements.txt
 アプリケーションを実行するには、以下のコマンドを使用します。
 
 ```text
-python main.py <BlueSkyのユーザーハンドル> <BlueSkyのパスワード> <GeminiのAPIキー>
+uv run python main.py <BlueSkyのユーザーハンドル> <BlueSkyのパスワード> <GeminiのAPIキー>
 ```
 
 プログラムは、GitHubのトレンドから最も人気のあるリポジトリを検出し、その内容を要約してBlueskyに投稿します。  

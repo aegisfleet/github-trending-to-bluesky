@@ -1,0 +1,18 @@
+[project]
+name = "github-trending-to-bluesky"
+version = "0.1.0"
+description = "A bot to fetch trending GitHub repositories and post them to Bluesky"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "atproto",
+    "beautifulsoup4",
+    "dnspython",
+    "google-genai",
+    "packaging",
+    "Pillow",
+    "requests",
+]
+
+[tool.uv]
+exclude-newer = "7 days"
