@@ -16,7 +16,7 @@ def extract_answer_text(response):
     return "".join(answer_texts)
 
 
-def generate_text_with_gemini(api_key: str, prompt_text: str) -> str | None:
+def generate_text_with_gemini(api_key: str, prompt_text: str) -> str:
     """
     Generates text using the Gemini API with exponential backoff retry for rate limits.
 
@@ -25,7 +25,10 @@ def generate_text_with_gemini(api_key: str, prompt_text: str) -> str | None:
         prompt_text: The prompt to send to the model.
 
     Returns:
-        The generated text, or None if an error occurred.
+        The generated text.
+
+    Raises:
+        Exception: If an error occurred and all retries failed.
     """
     max_retries = 5
     initial_delay = 2.0
@@ -54,6 +57,4 @@ def generate_text_with_gemini(api_key: str, prompt_text: str) -> str | None:
                 print(f"Gemini API rate limit hit (429/RESOURCE_EXHAUSTED). Retrying in {delay:.1f} seconds (Attempt {attempt + 1}/{max_retries})...")
                 time.sleep(delay)
             else:
-                print(f"Error generating text with Gemini: {e}")
-                return None
-    return None
+                raise e
