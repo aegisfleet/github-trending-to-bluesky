@@ -5,7 +5,7 @@ description = "A bot to fetch trending GitHub repositories and post them to Blue
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "atproto",
+    "atproto>=0.0.65",
     "beautifulsoup4",
     "dnspython",
     "google-genai",
