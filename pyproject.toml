@@ -18,3 +18,4 @@ dependencies = [
 override-dependencies = [
     "cryptography>=48.0.1",
 ]
+exclude-newer = "7 days"
