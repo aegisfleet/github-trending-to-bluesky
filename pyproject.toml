@@ -16,6 +16,6 @@ dependencies = [
 
 [tool.uv]
 override-dependencies = [
-    "cryptography>=48.0.1",
+    "cryptography>=50.0.0",
 ]
 exclude-newer = "7 days"
