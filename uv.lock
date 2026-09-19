@@ -34,7 +34,7 @@ wheels = [
 
 [[package]]
 name = "atproto"
-version = "0.0.71"
+version = "0.0.72"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -47,9 +47,9 @@ dependencies = [
     { name = "websockets" },
     { name = "zstandard" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e9/14/b294b86d26c8c968e715a212fbca0bfe87be48c66fc6f717a322e09c2119/atproto-0.0.71.tar.gz", hash = "sha256:34b9c6951208807ee066b46dcd7d7476bbd48dc4a36f4a6c3a6f9fa48359166f", size = 288220, upload-time = "2026-08-19T22:56:53.966Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c6/54/9b365b712ae0e98af668af743a5411a7be44232ab0bec3f88e88f560304d/atproto-0.0.72.tar.gz", hash = "sha256:eec904188b0beba165a7cc14ccc6a190b3ce061fecac4db3b9166e2500b02a41", size = 299516, upload-time = "2026-09-10T20:43:36.36Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f7/83/9d4c716096832fd9d3bf53620442b50180ca357ad28fbcbecd573df96fbe/atproto-0.0.71-py3-none-any.whl", hash = "sha256:2054cb1f3bb882f5db6face7f427216119cc3002f3735871056c72cad778f96a", size = 603314, upload-time = "2026-08-19T22:56:52.069Z" },
+    { url = "https://files.pythonhosted.org/packages/28/01/35eb989f870b2e152d5fe7384224a28d82b2d010bf9bb45b07e06966bddd/atproto-0.0.72-py3-none-any.whl", hash = "sha256:239ca1c54cb4c878f625581b44abd1f0018b7b55419f7ca886468641ecb7fb09", size = 623231, upload-time = "2026-09-10T20:43:34.479Z" },
 ]
 
 [[package]]
