@@ -17,5 +17,10 @@ dependencies = [
 [tool.uv]
 override-dependencies = [
     "cryptography>=50.0.0",
+    "certifi>=2026.10.19",
 ]
 exclude-newer = "7 days"
+
+[tool.uv.exclude-newer-package]
+certifi = false
+
