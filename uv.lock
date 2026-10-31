@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.12"
 
 [options]
@@ -39,7 +39,7 @@ wheels = [
 
 [[package]]
 name = "atproto"
-version = "0.0.72"
+version = "0.0.73"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -48,13 +48,14 @@ dependencies = [
     { name = "httpx" },
     { name = "libipld" },
     { name = "pydantic" },
+    { name = "tlds" },
     { name = "typing-extensions" },
     { name = "websockets" },
     { name = "zstandard" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c6/54/9b365b712ae0e98af668af743a5411a7be44232ab0bec3f88e88f560304d/atproto-0.0.72.tar.gz", hash = "sha256:eec904188b0beba165a7cc14ccc6a190b3ce061fecac4db3b9166e2500b02a41", size = 299516, upload-time = "2026-09-10T20:43:36.36Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1a/1b/02577f6d5eaa62d7d7fd922ccf6905c77a3f1cf619286690b5fca5da637f/atproto-0.0.73.tar.gz", hash = "sha256:0dc0e7f60ce99113b3371528d368e47566b44344812c7b0047229eda8b07eb13", size = 325800, upload-time = "2026-10-17T19:15:16.461Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/28/01/35eb989f870b2e152d5fe7384224a28d82b2d010bf9bb45b07e06966bddd/atproto-0.0.72-py3-none-any.whl", hash = "sha256:239ca1c54cb4c878f625581b44abd1f0018b7b55419f7ca886468641ecb7fb09", size = 623231, upload-time = "2026-09-10T20:43:34.479Z" },
+    { url = "https://files.pythonhosted.org/packages/98/0f/f2289686a9e0cbadfe268116c9d81886e76354c7d748bb94aa9669a40ed1/atproto-0.0.73-py3-none-any.whl", hash = "sha256:772dbef364788385724b1724434a42c56b9aeeec0e480c70f6b7edd7f65f1e77", size = 675072, upload-time = "2026-10-17T19:15:14.573Z" },
 ]
 
 [[package]]
@@ -700,6 +701,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/47/c6/ee486fd809e357697ee8a44d3d69222b344920433d3b6666ccd9b374630c/tenacity-9.1.4.tar.gz", hash = "sha256:adb31d4c263f2bd041081ab33b498309a57c77f9acf2db65aadf0898179cf93a", size = 49413, upload-time = "2026-02-07T10:45:33.841Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d7/c1/eb8f9debc45d3b7918a32ab756658a0904732f75e555402972246b0b8e71/tenacity-9.1.4-py3-none-any.whl", hash = "sha256:6095a360c919085f28c6527de529e76a06ad89b23659fa881ae0649b867a9d55", size = 28926, upload-time = "2026-02-07T10:45:32.24Z" },
+]
+
+[[package]]
+name = "tlds"
+version = "2026093003"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/a5/c6/9d07dee4561d7975f06f558e403400b2f3e8311ca743908691636b648320/tlds-2026093003.tar.gz", hash = "sha256:573e8eb20d9f5dcbaed6fdfc56f2fd6047e6fef6282af24147589e87700a32bb", size = 7876, upload-time = "2026-10-02T10:33:20.648Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/6a/02/a4d80f666fa50417ce6d999b6b06f2aec3cfb80ecae0520a14da6bdd3ec6/tlds-2026093003-py2.py3-none-any.whl", hash = "sha256:3cb9452b79f08957bf868d407d40625897ac3215d6bbe8b3fdd38dce753cd41e", size = 8067, upload-time = "2026-10-02T10:33:19.246Z" },
 ]
 
 [[package]]
